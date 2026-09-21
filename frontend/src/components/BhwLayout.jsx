@@ -46,8 +46,8 @@ function BHWLayout() {
 
   const pageTitles = {
   '/bhw/dashboard': <div className="mb-4">
-        <h1 className="text-xl font-bold text-gray-800">BHW Dashboard</h1>
-        <p className="text-sm text-gray-500">{user.barangay} — Nutrition Monitoring</p>
+      <h1 className="text-xl font-bold text-gray-800">BNS Dashboard</h1>
+      <p className="text-sm text-gray-500">{user.barangay} — Health Monitoring</p>
       </div>,
 
 

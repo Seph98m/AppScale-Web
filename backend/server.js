@@ -19,6 +19,7 @@ const bhwReferralsRoutes = require('./routes/bhwReferralsRoutes');
 const bhwMedicalRecordsRoutes = require('./routes/bhwMedicalRecordsRoutes');
 const bhwNotificationRoutes = require('./routes/bhwNotificationRoutes');
 const bhwProfileRoutes = require('./routes/bhwProfileRoutes');
+const mobileBeneficiaryRoutes = require('./routes/mobileBeneficiaryRoutes');
 
 const app = express();
 
@@ -44,6 +45,7 @@ app.use('/api/bhw/referrals', bhwReferralsRoutes);
 app.use('/api/bhw/medical-records', bhwMedicalRecordsRoutes);
 app.use('/api/bhw/notification', bhwNotificationRoutes);
 app.use('/api/bhw/profile', bhwProfileRoutes);
+app.use('/api/mobile', mobileBeneficiaryRoutes);
 
 app.use('/uploads',express.static(path.join(__dirname, 'uploads')))
 // check 

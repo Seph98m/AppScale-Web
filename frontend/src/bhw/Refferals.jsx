@@ -17,6 +17,14 @@ const statusColors = {
   closed: 'bg-gray-100 text-gray-600',
 };
 
+const serviceOptions = [
+  { value: '', label: 'No medicine / refer to RHU' },
+  { value: 'vitamin_a', label: 'Vitamin A' },
+  { value: 'deworming', label: 'Deworming' },
+  { value: 'feeding', label: 'Feeding Program' },
+  { value: 'checkup', label: 'General Checkup' },
+];
+
 function daysSince(dateStr) {
   if (!dateStr) return null;
   const diffMs = new Date() - new Date(dateStr);
@@ -38,6 +46,8 @@ function Referrals() {
   // respond modal
   const [respondTarget, setRespondTarget] = useState(null);
   const [responseNotes, setResponseNotes] = useState('');
+  const [serviceType, setServiceType] = useState('');
+  const [serviceDate, setServiceDate] = useState(new Date().toISOString().slice(0, 10));
   const [respondSubmitting, setRespondSubmitting] = useState(false);
   const [respondError, setRespondError] = useState('');
 
@@ -85,6 +95,8 @@ function Referrals() {
   const openRespondModal = (r) => {
     setRespondTarget(r);
     setResponseNotes('');
+    setServiceType('');
+    setServiceDate(new Date().toISOString().slice(0, 10));
     setRespondError('');
   };
 
@@ -96,6 +108,9 @@ function Referrals() {
       await axiosClient.patch(`/bhw/referrals/${respondTarget.referral_id}/status`, {
         status: 'responded',
         response_notes: responseNotes,
+        service_type: serviceType || null,
+        service_date: serviceDate,
+        provided_by: user.user_id,
       });
       setRespondTarget(null);
       fetchData();
@@ -261,6 +276,29 @@ function Referrals() {
               className="w-full mb-3 text-sm border border-gray-200 rounded-lg px-3 py-2"
               placeholder="e.g. Follow-up visit scheduled, gamot ibinigay"
             />
+
+            <label className="block text-xs text-gray-500 mb-1">Medicine / Service Given</label>
+            <select
+              value={serviceType}
+              onChange={(e) => setServiceType(e.target.value)}
+              className="w-full mb-3 text-sm border border-gray-200 rounded-lg px-3 py-2"
+            >
+              {serviceOptions.map((option) => (
+                <option key={option.value} value={option.value}>{option.label}</option>
+              ))}
+            </select>
+
+            {serviceType && (
+              <>
+                <label className="block text-xs text-gray-500 mb-1">Service Date</label>
+                <input
+                  type="date"
+                  value={serviceDate}
+                  onChange={(e) => setServiceDate(e.target.value)}
+                  className="w-full mb-3 text-sm border border-gray-200 rounded-lg px-3 py-2"
+                />
+              </>
+            )}
 
             {respondError && <p className="text-xs text-red-500 mb-2">{respondError}</p>}
 
